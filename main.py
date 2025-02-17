@@ -81,6 +81,14 @@ while game_is_running:
     if alien_y + alien_height > fighter_y:
         game_is_running = False  # логическое значение для віхода из цикла
 
+    # удаление шарика с экрана и перемещение инопланетянина в начальную позицию
+    if ball_was_fired and \
+            alien_x < ball_x < alien_x + alien_width - ball_width and \
+            alien_y < ball_y < alien_y + alien_height - ball_height:
+        ball_was_fired = False  # скрытие шарика
+        # перемещаем шарик с изображением инопланетянина наверх
+        alien_x, alien_y = randint(0, screen_width - alien_width), 0
+
 game_over_text = game_font.render("Game Over", True, 'white')
 game_over_rectangle = game_over_text.get_rect() # создание текста в прямоугольнике
 game_over_rectangle.center = (screen_width / 2, screen_height / 2)  # определение координат центра всего экрана для вывода прямоугольника с текстом
