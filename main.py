@@ -4,6 +4,8 @@ from random import randint
 
 pygame.init()
 
+game_font = pygame.font.Font(None, 30)  # шрифт для игры
+
 screen_width, screen_height = 800, 600
 screen_fill_color = (32, 52, 71)
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -26,9 +28,11 @@ ball_was_fired = False
 ALIEN_STEP = 0.1
 alien_image = pygame.image.load('images/alien.png')  # импорт изображения
 alien_width, alien_height = alien_image.get_size()  # определим размеры изображения
-alien_x, alien_y = randint(0, screen_width - alien_width), 0  # начальные координаты
+alien_x, alien_y = randint(0, screen_width - alien_width), 0  # начальные координаты выбирается начальным образом
 
-while True:
+game_is_running = True
+
+while game_is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -54,7 +58,7 @@ while True:
         fighter_x += FIGHTER_STEP
 
     # print(ball_was_fired)
-    alien_y += ALIEN_STEP
+    alien_y += ALIEN_STEP  # изменение координаты y для инопланетянина на шаг
     
     if ball_was_fired and ball_y + ball_height < 0:
         ball_was_fired = False
@@ -71,3 +75,18 @@ while True:
         screen.blit(ball_image, (ball_x, ball_y))
 
     pygame.display.update()
+
+    # проверка дошло ли изображение с инопланетянином до изображения с кораблем
+
+    if alien_y + alien_height > fighter_y:
+        game_is_running = False  # логическое значение для віхода из цикла
+
+game_over_text = game_font.render("Game Over", True, 'white')
+game_over_rectangle = game_over_text.get_rect() # создание текста в прямоугольнике
+game_over_rectangle.center = (screen_width / 2, screen_height / 2)  # определение координат центра всего экрана для вывода прямоугольника с текстом
+screen.blit(game_over_text, game_over_rectangle)  # тобразить текст по центру экран
+
+pygame.display.update()  # обновить екран
+pygame.time.wait(5000) # задержка для чтения текста
+
+pygame.quit()
