@@ -35,59 +35,61 @@ game_is_running = True
 
 game_score = 0  # счетчик попаданий
 while game_is_running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pygame.event.get():  # обработка событий внутри цыкла
+        if event.type == pygame.QUIT:   #  если событие завершено завершается игровой процес
             sys.exit()
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:  # если нажата одна из клавишь то выполняются соответствующие действия
             if event.key == pygame.K_LEFT:
-                fighter_is_moving_left = True
+                fighter_is_moving_left = True # для перемещения влево
             if event.key == pygame.K_RIGHT:
                 fighter_is_moving_right = True
             if event.key == pygame.K_SPACE:
                 ball_was_fired = True
                 ball_x = fighter_x + fighter_width / 2 - ball_width / 2
                 ball_y = fighter_y - ball_height
-        if event.type == pygame.KEYUP:
+        if event.type == pygame.KEYUP:  # если клавиша отпущена движение корабля прекращается
                 if event.key == pygame.K_LEFT:
                     fighter_is_moving_left = False
                 if event.key == pygame.K_RIGHT:
                     fighter_is_moving_right = False
 
-    if fighter_is_moving_left and fighter_x >= FIGHTER_STEP:
-        fighter_x -= FIGHTER_STEP
+    if fighter_is_moving_left and fighter_x >= FIGHTER_STEP:   # процес перемещения влево
+        fighter_x -= FIGHTER_STEP  # изменение координаты X для корабля
 
     if fighter_is_moving_right and fighter_x <= screen_width - fighter_width - FIGHTER_STEP:
         fighter_x += FIGHTER_STEP
 
     # print(ball_was_fired)
     # alien_y += ALIEN_STEP  # изменение координаты y для инопланетянина на шаг
-    alien_y += alien_speed  #
+    alien_y += alien_speed  # изменение координаты по оси у инопланетянина
 
     if ball_was_fired and ball_y + ball_height < 0:
         ball_was_fired = False
 
-    if ball_was_fired:
+    if ball_was_fired:  # если шарик виден на экране то мы перемещаем його по оси у вверх
         ball_y -= BALL_STEP
 
     screen.fill(screen_fill_color)  # вывести изображение фона
     screen.blit(fighter_image, (fighter_x, fighter_y))  # вывести истребитель
     screen.blit(alien_image, (alien_x, alien_y))  # показать инопланетянина на экране
 
-
+    # если ball_was_fired то ресуем шарик на экране
     if ball_was_fired:
         screen.blit(ball_image, (ball_x, ball_y))
 
     # Счетчик попаданий
     game_score_text = game_font.render(f"Your Score is: {game_score}", True, 'white')
     screen.blit(game_score_text, (20, 20))
-    pygame.display.update()
+
+    pygame.display.update() # функция для обновления всех изменений на экране
 
     # проверка дошло ли изображение с инопланетянином до изображения с кораблем
 
-    if alien_y + alien_height > fighter_y:
-        game_is_running = False  # логическое значение для віхода из цикла
+    if alien_y + alien_height > fighter_y:  # достиг ли инопланетянин границы с кораблем
+        game_is_running = False  # логическое значение для выхода из цикла
 
     # удаление шарика с экрана и перемещение инопланетянина в начальную позицию
+    # попал ли шарик по инопланетянину
     if ball_was_fired and \
             alien_x < ball_x < alien_x + alien_width - ball_width and \
             alien_y < ball_y < alien_y + alien_height - ball_height:
@@ -95,7 +97,7 @@ while game_is_running:
         # перемещаем шарик с изображением инопланетянина наверх
         alien_x, alien_y = randint(0, screen_width - alien_width), 0
         alien_speed += ALIEN_STEP / 2 # увеличение скорости инопланетянина
-        game_score += 1
+        game_score += 1  
 
 
 game_over_text = game_font.render("Game Over", True, 'white')
