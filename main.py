@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 pygame.display.set_caption("Awesome Shooter Game")
 
-FIGHTER_STEP = 0.1
+FIGHTER_STEP = 0.2  # скорость перемещения корабля
 
 fighter_image = pygame.image.load('images/fighter.png')
 fighter_width, fighter_height = fighter_image.get_size()
@@ -25,7 +25,8 @@ ball_width, ball_height = ball_image.get_size()
 ball_x, ball_y = 0, 0 # fighter_x + fighter_width / 2 - ball_width / 2, fighter_y - ball_height
 ball_was_fired = False
 
-ALIEN_STEP = 0.1
+ALIEN_STEP = 0.02
+alien_speed = ALIEN_STEP
 alien_image = pygame.image.load('images/alien.png')  # импорт изображения
 alien_width, alien_height = alien_image.get_size()  # определим размеры изображения
 alien_x, alien_y = randint(0, screen_width - alien_width), 0  # начальные координаты выбирается начальным образом
@@ -58,8 +59,9 @@ while game_is_running:
         fighter_x += FIGHTER_STEP
 
     # print(ball_was_fired)
-    alien_y += ALIEN_STEP  # изменение координаты y для инопланетянина на шаг
-    
+    # alien_y += ALIEN_STEP  # изменение координаты y для инопланетянина на шаг
+    alien_y += alien_speed  #
+
     if ball_was_fired and ball_y + ball_height < 0:
         ball_was_fired = False
 
@@ -88,6 +90,8 @@ while game_is_running:
         ball_was_fired = False  # скрытие шарика
         # перемещаем шарик с изображением инопланетянина наверх
         alien_x, alien_y = randint(0, screen_width - alien_width), 0
+        alien_speed += ALIEN_STEP / 2 # увеличение скорости инопланетянина
+
 
 game_over_text = game_font.render("Game Over", True, 'white')
 game_over_rectangle = game_over_text.get_rect() # создание текста в прямоугольнике
