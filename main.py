@@ -33,6 +33,7 @@ alien_x, alien_y = randint(0, screen_width - alien_width), 0  # начальны
 
 game_is_running = True
 
+game_score = 0  # счетчик попаданий
 while game_is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -76,6 +77,9 @@ while game_is_running:
     if ball_was_fired:
         screen.blit(ball_image, (ball_x, ball_y))
 
+    # Счетчик попаданий
+    game_score_text = game_font.render(f"Your Score is: {game_score}", True, 'white')
+    screen.blit(game_score_text, (20, 20))
     pygame.display.update()
 
     # проверка дошло ли изображение с инопланетянином до изображения с кораблем
@@ -91,6 +95,7 @@ while game_is_running:
         # перемещаем шарик с изображением инопланетянина наверх
         alien_x, alien_y = randint(0, screen_width - alien_width), 0
         alien_speed += ALIEN_STEP / 2 # увеличение скорости инопланетянина
+        game_score += 1
 
 
 game_over_text = game_font.render("Game Over", True, 'white')
