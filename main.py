@@ -97,7 +97,7 @@ while game_is_running:
         # перемещаем шарик с изображением инопланетянина наверх
         alien_x, alien_y = randint(0, screen_width - alien_width), 0
         alien_speed += ALIEN_STEP / 2 # увеличение скорости инопланетянина
-        game_score += 1  
+        game_score += 1
 
 
 game_over_text = game_font.render("Game Over", True, 'white')
