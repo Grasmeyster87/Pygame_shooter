@@ -4,7 +4,7 @@ from random import randint
 
 class Alien:
     def __init__(self):
-        self.image = pygame.image.load('image/alien.png') # добавление фото пришельца
+        self.image = pygame.image.load('images/alien.png') # добавление фото пришельца
         self.width, self.height = self.image.get_size()  # получение размера фото
         self.x, self.y = randint(0, SCREEN_WIDTH - self.width), 0  # получение случайных координат для появления пришельца
         self.step = ALIEN_STEP  # начальная скорость пришельца
