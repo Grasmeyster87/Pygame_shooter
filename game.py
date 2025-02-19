@@ -1,4 +1,5 @@
 import pygame
+import sys
 from fighter import Fighter
 from alien import Alien
 from ball import Ball
@@ -18,4 +19,39 @@ class Game:
         self.ball = Ball(self.fighter)
 
         self.game_is_running = True
-        
+
+    def run(self):
+        while self.game_is_running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                self.handle_key_events(event)
+            self.update_game_state()
+
+    def handle_key_events(self, event):
+        if event.type == pygame.KEYDOWN:  # если нажата одна из клавишь то выполняются соответствующие действия
+            if event.key == pygame.K_LEFT:
+                self.fighter.move_left() # для перемещения влево
+            if event.key == pygame.K_RIGHT:
+                self.fighter.move_right()
+            if event.key == pygame.K_SPACE:
+                self.ball.fire()
+        if event.type == pygame.KEYUP:  # если клавиша отпущена движение корабля прекращается
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    self.fighter.stop_moving()
+
+    def update_game_state(self):
+        self.fighter.update_position()
+        self.alien.update_position()
+        self.ball.update_position()
+
+        if self.ball.is_out_of_screen():
+            self.ball.reset()
+
+        if self.ball.is_collision(self.alien):
+            self.ball.reset()
+            self.alien.reset()
+            self.game_score += 1
+
+        if self.alien.has_reached_fighter(self.fighter):
+            self.game_is_running = False
